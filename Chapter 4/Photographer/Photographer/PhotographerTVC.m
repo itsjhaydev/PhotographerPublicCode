@@ -53,7 +53,7 @@
         NSMutableArray *newPhotoArray = [[NSMutableArray alloc] init];
 
         for (NSDictionary *photoData in photos) {
-            [newPhotoArray addObject:[PhotoData parseDataToDictionary:photoData]];
+            [newPhotoArray addObject:[[PhotoData alloc] initWithDictionary:photoData]];
         }
 
         [self fetchPhotographerInfo:photos];
@@ -81,8 +81,9 @@
             }
             NSDictionary *propertyListResults = [NSJSONSerialization JSONObjectWithData:jsonResults options:0 error:NULL];
             NSDictionary *data = [PhotographerData parseDataToDictionary:propertyListResults];
-            if(data != nil){
-                [photographerInfoHolder addObject:data];
+            PhotographerData *photographer = [[PhotographerData alloc] initWithDictionary:data];
+            if(photographer != nil){
+                [photographerInfoHolder addObject:photographer];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 if(photographerId == [withPhotos lastObject]) {
@@ -122,6 +123,8 @@
     self.sortedPhotograherinfoList = arrangePhotographerData;
 }
 
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView 
@@ -141,7 +144,7 @@
     
 //     Configure the cell...
     NSArray *photographerList = [self.sortedPhotograherinfoList[indexPath.section] lastObject];
-    PhotographerData *photographer = [[PhotographerData alloc] initWithDictionary:photographerList[indexPath.row]];
+    PhotographerData *photographer = photographerList[indexPath.row];
     
     cell.textLabel.text = photographer.name;
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld", photographer.photoCount];
@@ -171,10 +174,9 @@
         if(indexPath) {
             if([segue.identifier isEqualToString:@"show photo list"]) {
                 if([segue.destinationViewController isKindOfClass:[PhotoListTVC class]]) {
-                    NSDictionary *photographerInfo = self.sortedPhotograherinfoList[indexPath.section][1][indexPath.row];
-                    PhotographerData *data = [[PhotographerData alloc] initWithDictionary:photographerInfo];
+                    PhotographerData *photographerInfo = self.sortedPhotograherinfoList[indexPath.section][1][indexPath.row];
                     PhotoListTVC *photoListTVC = (PhotoListTVC *)segue.destinationViewController;
-                    photoListTVC.photographer = data;
+                    photoListTVC.photographer = photographerInfo;
                 }
             }
         }

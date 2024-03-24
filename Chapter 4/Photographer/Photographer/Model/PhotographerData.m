@@ -31,13 +31,9 @@
     self = [super init];
     
     if (self) {
-        
-        NSString *photographerName       = [withDictionary valueForKeyPath:NAME_KEY];
-        NSString *photographerUserID     = [withDictionary valueForKeyPath:USER_ID_KEY];
-        NSNumber *photographerPhotoCount = [withDictionary valueForKeyPath:PHOTO_COUNT_KEY];
-        self.name       = photographerName;
-        self.photoCount = [photographerPhotoCount intValue];
-        self.userID     = photographerUserID;
+        _name       = [withDictionary valueForKeyPath:NAME_KEY];
+        _photoCount = [[withDictionary valueForKeyPath:PHOTO_COUNT_KEY] intValue];
+        _userID     = [withDictionary valueForKeyPath:USER_ID_KEY];
     }
     return self;
 }
@@ -71,4 +67,8 @@
 
 
 @end
+
+
+
+
 

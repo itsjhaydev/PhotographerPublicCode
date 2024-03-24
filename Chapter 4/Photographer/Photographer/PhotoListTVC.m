@@ -20,7 +20,7 @@
 
 @implementation PhotoListTVC
 
-- (void)viewDidLoad 
+- (void)viewDidLoad
 {
     [super viewDidLoad];
     self.title = [[NSString alloc] initWithFormat:@"%@ Photos", self.photographer.name];
@@ -80,7 +80,7 @@
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath 
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"photo_cell" forIndexPath:indexPath];
     
@@ -123,7 +123,7 @@
 #pragma mark - Navigation
 
 // In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if([sender isKindOfClass:[UITableViewCell class]]) {
         NSIndexPath *indexPath = [self.tableView indexPathForCell:sender];
@@ -131,9 +131,9 @@
             if([segue.identifier isEqualToString:@"dispay_single_photo"]) {
                 if([segue.destinationViewController isKindOfClass:[ImageViewController class]]) {
                     NSDictionary *photoInfo = self.arrayOfPhoto[indexPath.row];
-                    PhotoData *data = [[PhotoData alloc] initWithDictionary:photoInfo];
+                    PhotoData *photoData = [[PhotoData alloc] initWithDictionary:photoInfo];
                     [self addPhotoToRecentTabBar:photoInfo];
-                    [self prepareImageViewController:segue.destinationViewController photoToDisplay:data];
+                    [self prepareImageViewController:segue.destinationViewController photoToDisplay:photoData];
                 }
             }
         }
@@ -149,8 +149,8 @@
         NSMutableDictionary *newMutableDictionary = [[NSMutableDictionary alloc] initWithDictionary:withDictionary];
         NSMutableArray *recentPhoto = [[NSMutableArray alloc] initWithArray:[PhotoData saveRecentViewedPhoto:RECENT_PHOTO_KEY]];
         NSTimeInterval timestamp = [[NSDate date] timeIntervalSince1970];
-        NSNumber *timestamoData = [NSNumber numberWithDouble:timestamp];
-        [newMutableDictionary setValue:timestamoData forKey:TIMESTAMP_KEY];
+        NSNumber *timestampData = [NSNumber numberWithDouble:timestamp];
+        [newMutableDictionary setValue:timestampData forKey:TIMESTAMP_KEY];
         
         for(NSDictionary *data in recentPhoto) {
             
@@ -171,3 +171,5 @@
 
 
 @end
+
+
